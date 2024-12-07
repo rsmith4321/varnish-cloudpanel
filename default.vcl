@@ -5,13 +5,12 @@ import std;
 backend default {
     .host = "127.0.0.1";
     .port = "8080";
-    .first_byte_timeout = 600s;
 }
 
 acl purge {
     "localhost";
     "127.0.0.1";
-    "172.17.0.1";
+    "::1";
 }
 
 sub vcl_recv {
@@ -222,8 +221,6 @@ sub vcl_deliver {
     } elseif(!resp.http.X-Cacheable) {
         set resp.http.X-Cacheable = "YES";
     }
-
-          
 
     # Cleanup internal headers
     unset resp.http.x-url;
